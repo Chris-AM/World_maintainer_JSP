@@ -4,11 +4,13 @@
     Author     : Acid Labs
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@page import="model.City"%>
 <%@page import="daoModel.CityDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%List<City> listCity = (List<City>) request.getAttribute("list");%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,28 +29,20 @@
                         <th>Population</th>
                     </tr>
                 </thead>
-                <%
-                    CityDAO cityDAO = new CityDAO();
-                    List<City> listCity = cityDAO.list();
-                    Iterator<City> iterator = listCity.iterator();
-                    City city = null;
-                    while(iterator.hasNext()){
-                        city = iterator.next();
-                    
-                %>
+                <c:forEach var="item" items="${list}">
                 <tbody>
                     <tr>
-                        <td><%= city.getName() %></td>
-                        <td><%= city.getCountryCode()%></td>
-                        <td><%= city.getDistrict()%></td>
-                        <td><%= city.getPopulation()%></td>
+                        <td>${item.name}</td>
+                        <td>${item.countryCode}</td>
+                        <td>${item.district}</td>
+                        <td>${item.population}</td>
                         <td>
                             <a>Edit</a>
                             <a>Remove</a>
                         </td>
                     </tr>
-                    <%}%>
                 </tbody>
+                </c:forEach>
             </table>
         </div>
     </body>

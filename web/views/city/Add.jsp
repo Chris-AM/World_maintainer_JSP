@@ -12,6 +12,29 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Im in add!</h1>
+        <h1>New City</h1>
+        
+        <table border='1'>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Country Code</th>
+                        <th>District</th>
+                        <th>Population</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </table>
     </body>
 </html>
