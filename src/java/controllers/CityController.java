@@ -1,6 +1,7 @@
 package controllers;
 
 import configurations.MyConnection;
+import daoModel.CityDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -9,8 +10,7 @@ import java.sql.ResultSet;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +25,9 @@ public class CityController extends HttpServlet {
     String listCity = "views/city/List.jsp";
     String addCity = "views/city/Add.jsp";
     String updateCity = "views/city/Update.jsp";
-
+    City city = new City();
+    CityDAO cityDAO = new CityDAO();
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -46,107 +48,97 @@ public class CityController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String option;
-        option = (request.getParameter("option") != null)
-                ? request.getParameter("option")
-                : "list";
-        ArrayList<City> listCity = new ArrayList<City>();
-
-        MyConnection myConnection = new MyConnection();
-        Connection conn = myConnection.connect();
-
-        PreparedStatement preparedStatement;
-        ResultSet resultSet;
-
-        if (option.equals("list")) {
-            try {
-                String sql = "select * from city";
-                preparedStatement = conn.prepareStatement(sql);
-                resultSet = preparedStatement.executeQuery();
-
-                while (resultSet.next()) {
-                    City city = new City();
-                    city.setId(resultSet.getInt("ID"));
-                    city.setName(resultSet.getString("Name"));
-                    city.setCountryCode(resultSet.getString("CountryCode"));
-                    city.setDistrict(resultSet.getString("District"));
-                    city.setPopulation(resultSet.getInt("Population"));
-
-                    listCity.add(city);
-                }
-                request.setAttribute("list", listCity);
-                request.getRequestDispatcher(this.listCity).forward(request, response);
-            } catch (SQLException e) {
-                System.out.println("Mysql Error" + e.getMessage());
-            } finally {
-                myConnection.disconnect();
-            }
+        
+        String access = "";
+        String option = request.getParameter("option");
+        if(option.equalsIgnoreCase("list")){
+            access=listCity;
+        }else if(option.equalsIgnoreCase("add")){
+            access=addCity;
+        }else if (option.equalsIgnoreCase("Submit")){
+            String cityName = request.getParameter("txtCityName");
+            String cityCountryCode = request.getParameter("txtCityCountryCode");
+            String cityDistrict = request.getParameter("txtCityDistrict");
+            int population = Integer.parseInt(request.getParameter("txtCityPopulation"));
+            
+            city.setName(cityName);
+            city.setCountryCode(cityCountryCode);
+            city.setDistrict(cityDistrict);
+            city.setPopulation(population);
+            
+            cityDAO.addCity(city);
+            
+            access = listCity;
+            
+        }else if(option.equalsIgnoreCase("edit")){
+            request.setAttribute("cityID", request.getParameter("id"));
+            access = updateCity;
+        }else if(option.equalsIgnoreCase("Update")){
+            int id = Integer.parseInt(request.getParameter("txtId"));
+            String cityName = request.getParameter("txtCityName");
+            String cityCountryCode = request.getParameter("txtCityCountryCode");
+            String cityDistrict = request.getParameter("txtCityDistrict");
+            int population = Integer.parseInt(request.getParameter("txtCityPopulation"));
+            
+            city.setId(id);
+            city.setName(cityName);
+            city.setCountryCode(cityCountryCode);
+            city.setDistrict(cityDistrict);
+            city.setPopulation(population);
+            
+            cityDAO.editCity(city);
+            
+            access = listCity;
+        }else if (option.equalsIgnoreCase("delete")){
+           int id = Integer.parseInt(request.getParameter("id")); 
+            city.setId(id);
+            cityDAO.deleteCity(id);
+            access = listCity;
+            
         }
-        if (option.equals("new")) {
-            City city = new City();
-            request.setAttribute("city", city);
-            request.getRequestDispatcher(this.addCity).forward(request, response);
-        }
-        if (option.equals("update")){
-            City city = new City();
-            request.setAttribute("city", city);
-            request.getRequestDispatcher(this.updateCity).forward(request, response);
-        }
-        if (option.equals("delete")) {
-            try {
-                int id = Integer.parseInt(request.getParameter("ID"));
-                String sql = "delete from city where ID = ?";
-                preparedStatement = conn.prepareStatement(sql);
-                preparedStatement.setInt(1, id);
-                preparedStatement.executeUpdate();
-            } catch (SQLException ex) {
-                System.out.println("SQL error" + ex);
-            } finally {
-                myConnection.disconnect();
-            }
-            response.sendRedirect("CityController");
-        }
+        RequestDispatcher view = request.getRequestDispatcher(access);
+        view.forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         int id = Integer.parseInt(request.getParameter("ID"));
         String name = request.getParameter("Name");
         String countrycode = request.getParameter("CountryCode");
         String district = request.getParameter("District");
         int population = Integer.parseInt(request.getParameter("Population"));
-        
+
         City city = new City();
         city.setName(name);
         city.setCountryCode(countrycode);
         city.setDistrict(district);
         city.setPopulation(population);
-        
+
         MyConnection myConnection = new MyConnection();
         Connection conn = myConnection.connect();
         PreparedStatement preparedStatement;
         ResultSet resultSet;
-        
-        if (id == 0 ){
+
+        if (id == 0) {
             String sql = "insert into city (Name, District, Population)"
-                    + "values(?,?,?,)"; 
-            try{
-            preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setString(1, city.getName());
-            preparedStatement.setString(2, city.getCountryCode());
-            preparedStatement.setString(3, city.getDistrict());
-            preparedStatement.setInt(4, city.getPopulation());  
-            preparedStatement.executeUpdate();
-            }catch(SQLException ex){
+                    + "values(?,?,?,)";
+            try {
+                preparedStatement = conn.prepareStatement(sql);
+                preparedStatement.setString(1, city.getName());
+                preparedStatement.setString(2, city.getCountryCode());
+                preparedStatement.setString(3, city.getDistrict());
+                preparedStatement.setInt(4, city.getPopulation());
+                preparedStatement.executeUpdate();
+            } catch (SQLException ex) {
                 System.out.println("SQL Error" + ex.getMessage());
-            }finally{
+            } finally {
                 myConnection.disconnect();
             }
             response.sendRedirect("CityController");
         }
-        
+
     }
 
     /**

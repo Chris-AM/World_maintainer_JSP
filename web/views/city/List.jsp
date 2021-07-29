@@ -10,7 +10,6 @@
 <%@page import="model.City"%>
 <%@page import="daoModel.CityDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%List<City> listCity = (List<City>) request.getAttribute("list");%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,6 +19,7 @@
     <body>
         <div>
             <hi>Cities</hi>
+          
             <table border="1">
                 <thead>
                     <tr>
@@ -27,22 +27,31 @@
                         <th>Country Code</th>
                         <th>District</th>
                         <th>Population</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <c:forEach var="item" items="${list}">
+                <%
+                    CityDAO cityDAO = new CityDAO();
+                    List<City> listCity = cityDAO.list();
+                    Iterator<City> iterator = listCity.iterator();
+                    City city = null;
+                    while (iterator.hasNext()) {
+                        city = iterator.next();
+                %>
                 <tbody>
                     <tr>
-                        <td>${item.name}</td>
-                        <td>${item.countryCode}</td>
-                        <td>${item.district}</td>
-                        <td>${item.population}</td>
+                        <td><%=city.getName()%></td>
+                        <td><%=city.getCountryCode()%></td>
+                        <td><%=city.getDistrict()%></td>
+                        <td><%=city.getPopulation()%></td>
                         <td>
-                            <a>Edit</a>
-                            <a>Remove</a>
+                            <a href="CityController?option=edit&id=<%=city.getId()%>">Edit</a>
+                            <a href="CityController?option=delete&id=<%=city.getId()%>">Remove</a>
                         </td>
                     </tr>
+                    <%}%>
                 </tbody>
-                </c:forEach>
+
             </table>
         </div>
     </body>

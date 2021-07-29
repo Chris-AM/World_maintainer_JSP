@@ -1,0 +1,9 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.cityForm{
+    display: flex;
+    /* background-color: red; */
+    flex-direction: column;
+}

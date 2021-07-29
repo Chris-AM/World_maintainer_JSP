@@ -7,7 +7,7 @@
     </head>
     <body>
         <div>
-            <a href="CityController?option=new">Add City</a>
+              <a href="CityController?option=add">Add City</a>
             <a href="CityController?option=list">List Cities</a>
             <a href="CityController?option=update">Update City</a>
             

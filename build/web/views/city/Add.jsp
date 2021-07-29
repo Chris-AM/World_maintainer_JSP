@@ -10,31 +10,23 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link href="../../styles.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <h1>New City</h1>
+        <h1>Add a new city</h1>
+        <div>
+            <form class="cityForm" action="CityController">
+                <p>Name</p>
+                <input type="text" name="txtCityName">
+                <p>Country Code (ISO code)</p>
+                <input type="text" name="txtCityCountryCode">
+                <p>District</p>
+                <input type="text" name="txtCityDistrict">
+                <p>Population</p>
+                <input type="text" name="txtCityPopulation">
+                <input type="submit" name="option" value="Submit">
+            </form>
+        </div>
         
-        <table border='1'>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Country Code</th>
-                        <th>District</th>
-                        <th>Population</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-
-                </tbody>
-            </table>
-
-        </table>
     </body>
 </html>

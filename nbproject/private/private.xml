@@ -3,8 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/src/java/configurations/MyConnection.java</file>
+            <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/web/views/city/Update.jsp</file>
+            <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/web/views/country/update.jsp</file>
             <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/web/index.jsp</file>
+            <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/src/java/controllers/CityController.java</file>
+            <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/web/views/country/list.jsp</file>
+            <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/web/views/city/Add.jsp</file>
+            <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/web/views/country/add.jsp</file>
+            <file>file:/C:/Users/Acid%20Labs/Documents/NetBeansProjects/world_maintainer/web/views/city/List.jsp</file>
         </group>
     </open-files>
 </project-private>
